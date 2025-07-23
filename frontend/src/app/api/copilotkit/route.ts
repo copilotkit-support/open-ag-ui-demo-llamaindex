@@ -9,8 +9,8 @@ import { HttpAgent } from "@ag-ui/client";
 
 
 const llamaIndexAgent = new HttpAgent({
-  // url: process.env.NEXT_PUBLIC_LANGGRAPH_URL || "http://0.0.0.0:8000/llamaindex-agent",
-  url: "http://0.0.0.0:8000/llamaindex-agent",
+  url: process.env.NEXT_PUBLIC_LLAMAINDEX_URL || "http://0.0.0.0:8000/llamaindex-agent",
+  // url: "https://open-ag-ui-demo-llamaindex.onrender.com/llamaindex-agent",
 });
 const serviceAdapter = new GoogleGenerativeAIAdapter()
 const runtime = new CopilotRuntime({

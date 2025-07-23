@@ -20,10 +20,9 @@ from ag_ui.core import (
     StateDeltaEvent
 )
 from ag_ui.encoder import EventEncoder
-from stock_analysis import agent_graph
 from copilotkit import CopilotKitState
 from typing import List
-from stock_analysis_ld import FuncationCallingAgent
+from stock_analysis import FuncationCallingAgent
 app = FastAPI()
 
 
