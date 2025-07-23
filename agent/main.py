@@ -17,12 +17,13 @@ from ag_ui.core import (
     ToolCallStartEvent,
     ToolCallEndEvent,
     ToolCallArgsEvent,
-    StateDeltaEvent
+    StateDeltaEvent,
 )
 from ag_ui.encoder import EventEncoder
 from copilotkit import CopilotKitState
 from typing import List
 from stock_analysis import FuncationCallingAgent
+
 app = FastAPI()
 
 
@@ -37,8 +38,9 @@ class AgentState(CopilotKitState):
     be_stock_data: Any
     be_arguments: dict
     available_cash: int
-    investment_summary : dict
-    tool_logs : list
+    investment_summary: dict
+    tool_logs: list
+
 
 @app.post("/llamaindex-agent")
 async def llama_index_agent(input_data: RunAgentInput):
@@ -63,13 +65,15 @@ async def llama_index_agent(input_data: RunAgentInput):
 
             yield encoder.encode(
                 StateSnapshotEvent(
-                    type=EventType.STATE_SNAPSHOT, 
+                    type=EventType.STATE_SNAPSHOT,
                     snapshot={
                         "available_cash": input_data.state["available_cash"],
-                        "investment_summary" : input_data.state["investment_summary"],
-                        "investment_portfolio" : input_data.state["investment_portfolio"],
-                        "tool_logs" : []
-                    }
+                        "investment_summary": input_data.state["investment_summary"],
+                        "investment_portfolio": input_data.state[
+                            "investment_portfolio"
+                        ],
+                        "tool_logs": [],
+                    },
                 )
             )
             state = AgentState(
@@ -79,11 +83,17 @@ async def llama_index_agent(input_data: RunAgentInput):
                 be_arguments=None,
                 available_cash=input_data.state["available_cash"],
                 investment_portfolio=input_data.state["investment_portfolio"],
-                tool_logs=[]
+                tool_logs=[],
             )
-            agent = FuncationCallingAgent(tools=input_data.tools, messages=input_data.messages, emit_event=emit_event, available_cash=input_data.state["available_cash"])
+            agent = FuncationCallingAgent(
+                tools=input_data.tools,
+                messages=input_data.messages,
+                emit_event=emit_event,
+                available_cash=input_data.state["available_cash"],
+                investment_portfolio=input_data.state["investment_portfolio"],
+            )
 
-            agent_task = agent.run(input = input_data.messages[-1].content)
+            agent_task = agent.run(input=input_data.messages[-1].content)
             while True:
                 try:
                     event = await asyncio.wait_for(event_queue.get(), timeout=0.1)
@@ -94,16 +104,10 @@ async def llama_index_agent(input_data: RunAgentInput):
                         break
 
             yield encoder.encode(
-            StateDeltaEvent(
-                type=EventType.STATE_DELTA,
-                delta=[
-                    {
-                        "op": "replace",
-                        "path": "/tool_logs",
-                        "value": []
-                    }
-                ]
-            )
+                StateDeltaEvent(
+                    type=EventType.STATE_DELTA,
+                    delta=[{"op": "replace", "path": "/tool_logs", "value": []}],
+                )
             )
             if agent_task.result()[-1].role == "assistant":
                 if agent_task.result()[-1].tool_calls:
@@ -149,10 +153,15 @@ async def llama_index_agent(input_data: RunAgentInput):
                         # Split content into 100 parts
                         n_parts = 100
                         part_length = max(1, len(content) // n_parts)
-                        parts = [content[i:i+part_length] for i in range(0, len(content), part_length)]
+                        parts = [
+                            content[i : i + part_length]
+                            for i in range(0, len(content), part_length)
+                        ]
                         # If splitting results in more than 5 due to rounding, merge last parts
                         if len(parts) > n_parts:
-                            parts = parts[:n_parts-1] + [''.join(parts[n_parts-1:])]
+                            parts = parts[: n_parts - 1] + [
+                                "".join(parts[n_parts - 1 :])
+                            ]
                         for part in parts:
                             yield encoder.encode(
                                 TextMessageContentEvent(
@@ -170,7 +179,7 @@ async def llama_index_agent(input_data: RunAgentInput):
                                 delta="Something went wrong! Please try again.",
                             )
                         )
-                    
+
                     yield encoder.encode(
                         TextMessageEndEvent(
                             type=EventType.TEXT_MESSAGE_END,

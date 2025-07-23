@@ -51,16 +51,18 @@ class FuncationCallingAgent(Workflow):
         messages: List[Any],
         emit_event: Callable,
         available_cash: int,
+        investment_portfolio: List[Any],
         **kwargs: Any,
     ) -> None:
         super().__init__(*args, **kwargs)
         self.tools = tools or []
         modified_messages = messages.copy()
         modified_messages[0].content = system_prompt.replace(
-            "{PORTFOLIO_DATA_PLACEHOLDER}", "[]"
+            "{PORTFOLIO_DATA_PLACEHOLDER}", json.dumps(investment_portfolio)
         )
         self.tool_logs = []
         self.messages = modified_messages or []
+        print(modified_messages[0].content)
         self.emit_event = emit_event
         self.llm = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
         self.available_cash = available_cash
@@ -628,7 +630,7 @@ class FuncationCallingAgent(Workflow):
             await asyncio.sleep(0)
             return StopEvent(result=self.messages)
         except Exception as e:
-            print(e)
+            print(e, "error in insights_function")
             return StopEvent(result=self.messages)
 
 

@@ -124,6 +124,7 @@ body {
     var(--gradient-aqua));
 }
 
+
 /* Animation for gradient background */
 @keyframes gradientShift {
   0% {
@@ -236,7 +237,6 @@ body {
 input, textarea {
   background: var(--card-bg) !important;
   color: var(--text-primary) !important;
-  border: 1px solid var(--border-color) !important;
 }
 
 /* CopilotKit specific overrides for light theme */
@@ -260,4 +260,8 @@ input, textarea {
 .copilotKitMessage.copilotKitUserMessage{
   background-color: #f0f0f0 !important;
   color: #1f2937 !important
+}
+
+.copilotKitInput {
+  background-color: #fffffff2 !important;
 }
