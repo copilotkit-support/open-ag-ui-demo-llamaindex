@@ -19,11 +19,11 @@ export function BarChartComponent({ data, size = "normal", onClick }: BarChartCo
   const fontSize = size === "small" ? 8 : 10
   const tooltipFontSize = size === "small" ? "9px" : "11px"
   return (
-    <div className={`bg-white border border-[#D8D8E5] rounded-xl ${padding}`}>
+    <div className={`glass-card rounded-xl ${padding}`}>
       <div style={{ height }}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#E8E8EF" />
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 166, 234, 0.2)" />
             <XAxis dataKey="ticker" stroke="#575758" fontSize={fontSize} fontFamily="Plus Jakarta Sans" />
             <YAxis
               stroke="#575758"
@@ -33,11 +33,13 @@ export function BarChartComponent({ data, size = "normal", onClick }: BarChartCo
             />
             <Tooltip
               contentStyle={{
-                backgroundColor: "white",
-                border: "1px solid #D8D8E5",
+                backgroundColor: "rgba(255, 255, 255, 0.95)",
+                backdropFilter: "blur(10px)",
+                border: "1px solid rgba(255, 166, 234, 0.2)",
                 borderRadius: "8px",
                 fontSize: tooltipFontSize,
                 fontFamily: "Plus Jakarta Sans",
+                boxShadow: "0 8px 32px rgba(255, 166, 234, 0.1)",
               }}
               formatter={(value: number) => [`${value.toFixed(1)}%`, "Return"]}
             />
@@ -48,7 +50,14 @@ export function BarChartComponent({ data, size = "normal", onClick }: BarChartCo
                 // @ts-ignore
                 onClick?.(data.payload.ticker as string)
               }
-            }} dataKey="return" fill="#86ECE4" radius={[2, 2, 0, 0]} />
+            }} dataKey="return" fill="url(#gradient)" radius={[2, 2, 0, 0]} />
+            <defs>
+              <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#FF64C8" />
+                <stop offset="100%" stopColor="#32C8FF" />
+                {/* <stop offset="100%" stopColor="#B478FF" /> */}
+              </linearGradient>
+            </defs>
           </BarChart>
         </ResponsiveContainer>
       </div>

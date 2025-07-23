@@ -25,14 +25,14 @@ export function PromptPanel({ availableCash }: PromptPanelProps) {
 
 
   return (
-    <div className="h-full flex flex-col bg-white">
+    <div className="h-full flex flex-col glass">
       {/* Header */}
-      <div className="p-4 border-b border-[#D8D8E5] bg-[#FAFCFA]">
+      <div className="p-4 border-b border-[#D8D8E5] glass-card">
         <div className="flex items-center gap-2 mb-2">
           <span className="text-xl">🪁</span>
           <div>
-            <h1 className="text-lg font-semibold text-[#030507] font-['Roobert']">Portfolio Chat</h1>
-            <div className="inline-block px-2 py-0.5 bg-[#BEC9FF] text-[#030507] text-xs font-semibold uppercase rounded">
+            <h1 className="text-lg font-semibold gradient-text font-['Roobert']">Portfolio Chat</h1>
+            <div className="inline-block px-2 py-0.5 glass-card neon-glow text-[#030507] text-xs font-semibold uppercase rounded">
               PRO
             </div>
           </div>
@@ -40,9 +40,9 @@ export function PromptPanel({ availableCash }: PromptPanelProps) {
         <p className="text-xs text-[#575758]">Interact with the LlamaIndex-powered AI agent for portfolio visualization and analysis</p>
 
         {/* Available Cash Display */}
-        <div className="mt-3 p-2 bg-[#86ECE4]/10 rounded-lg">
+        <div className="mt-3 p-2 glass-card neon-glow rounded-lg">
           <div className="text-xs text-[#575758] font-medium">Available Cash</div>
-          <div className="text-sm font-semibold text-[#030507] font-['Roobert']">{formatCurrency(availableCash)}</div>
+          <div className="text-sm font-semibold gradient-text font-['Roobert']">{formatCurrency(availableCash)}</div>
         </div>
       </div>
       <CopilotChat className="h-[78vh] p-2" labels={

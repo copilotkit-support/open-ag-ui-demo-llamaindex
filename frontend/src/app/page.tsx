@@ -118,7 +118,7 @@ export default function OpenStocksCanvas() {
               </div>
 
               <button hidden={status == "complete"}
-                className="mt-4 rounded-full px-6 py-2 bg-green-50 text-green-700 border border-green-200 shadow-sm hover:bg-green-100 transition-colors font-semibold text-sm"
+                className="mt-4 rounded-full px-6 py-2 glass-card neon-glow text-green-700 border border-green-200 shadow-sm hover:bg-green-100/20 transition-all duration-300 font-semibold text-sm"
                 onClick={() => {
                   debugger
                   if (respond) {
@@ -157,7 +157,7 @@ export default function OpenStocksCanvas() {
                 Accept
               </button>
               <button hidden={status == "complete"}
-                className="rounded-full px-6 py-2 bg-red-50 text-red-700 border border-red-200 shadow-sm hover:bg-red-100 transition-colors font-semibold text-sm ml-2"
+                className="rounded-full px-6 py-2 glass-card neon-glow text-red-700 border border-red-200 shadow-sm hover:bg-red-100/20 transition-all duration-300 font-semibold text-sm ml-2"
                 onClick={() => {
                   debugger
                   if (respond) {
@@ -183,7 +183,7 @@ export default function OpenStocksCanvas() {
         <>
           <LineChartComponent data={args?.investment_summary?.performanceData} size="small" />
           <button hidden={status == "complete"}
-            className="mt-4 rounded-full px-6 py-2 bg-green-50 text-green-700 border border-green-200 shadow-sm hover:bg-green-100 transition-colors font-semibold text-sm"
+            className="mt-4 rounded-full px-6 py-2 glass-card neon-glow text-green-700 border border-green-200 shadow-sm hover:bg-green-100/20 transition-all duration-300 font-semibold text-sm"
             onClick={() => {
               debugger
               if (respond) {
@@ -201,7 +201,7 @@ export default function OpenStocksCanvas() {
             Accept
           </button>
           <button hidden={status == "complete"}
-            className="rounded-full px-6 py-2 bg-red-50 text-red-700 border border-red-200 shadow-sm hover:bg-red-100 transition-colors font-semibold text-sm ml-2"
+            className="rounded-full px-6 py-2 glass-card neon-glow text-red-700 border border-red-200 shadow-sm hover:bg-red-100/20 transition-all duration-300 font-semibold text-sm ml-2"
             onClick={() => {
               debugger
               if (respond) {
@@ -267,16 +267,16 @@ export default function OpenStocksCanvas() {
 
 
   return (
-    <div className="h-screen bg-[#FAFCFA] flex overflow-hidden">
+    <div className="h-screen animated-gradient flex overflow-hidden">
       {/* Left Panel - Prompt Input */}
-      <div className="w-85 border-r border-[#D8D8E5] bg-white flex-shrink-0">
+      <div className="w-85 glass border-r border-[#D8D8E5] flex-shrink-0">
         <PromptPanel availableCash={totalCash} />
       </div>
 
       {/* Center Panel - Generative Canvas */}
       <div className="flex-1 relative min-w-0">
         {/* Top Bar with Cash Info */}
-        <div className="absolute top-0 left-0 right-0 bg-white border-b border-[#D8D8E5] p-4 z-10">
+        <div className="absolute top-0 left-0 right-0 glass border-b border-[#D8D8E5] p-4 z-10">
           <CashPanel
             totalCash={totalCash}
             investedAmount={investedAmount}
@@ -295,14 +295,14 @@ export default function OpenStocksCanvas() {
           </button>
         </div> */}
 
-        <div className="pt-20 h-full">
+        <div style={{backgroundColor: "whitesmoke"}} className="pt-20 h-full">
           <GenerativeCanvas setSelectedStock={setSelectedStock} portfolioState={currentState} sandBoxPortfolio={sandBoxPortfolio} setSandBoxPortfolio={setSandBoxPortfolio} />
         </div>
       </div>
 
       {/* Right Panel - Component Tree (Optional) */}
       {showComponentTree && (
-        <div className="w-64 border-l border-[#D8D8E5] bg-white flex-shrink-0">
+        <div className="w-64 glass border-l border-[#D8D8E5] flex-shrink-0">
           <ComponentTree portfolioState={currentState} />
         </div>
       )}

@@ -20,11 +20,11 @@ export function LineChartComponent({ data, size = "normal" }: LineChartComponent
   const tooltipFontSize = size === "small" ? "9px" : "11px"
   const legendFontSize = size === "small" ? "9px" : "11px"
   return (
-    <div className={`bg-white border border-[#D8D8E5] rounded-xl ${padding}`}>
+    <div className={`glass-card rounded-xl ${padding}`}>
       <div style={{ height }}>
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#E8E8EF" />
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 166, 234, 0.2)" />
             <XAxis dataKey="date" stroke="#575758" fontSize={fontSize} fontFamily="Plus Jakarta Sans" />
             <YAxis
               stroke="#575758"
@@ -34,12 +34,14 @@ export function LineChartComponent({ data, size = "normal" }: LineChartComponent
             />
             <Tooltip
               contentStyle={{
-                backgroundColor: "white",
-                border: "1px solid #D8D8E5",
+                backgroundColor: "rgba(255, 255, 255, 0.95)",
+                backdropFilter: "blur(10px)",
+                border: "1px solid rgba(255, 166, 234, 0.2)",
                 color: "#575758",
                 borderRadius: "8px",
                 fontSize: tooltipFontSize,
                 fontFamily: "Plus Jakarta Sans",
+                boxShadow: "0 8px 32px rgba(255, 166, 234, 0.1)",
               }}
               formatter={(value: number, name: string) => [
                 `$${value.toLocaleString()}`,
@@ -53,8 +55,8 @@ export function LineChartComponent({ data, size = "normal" }: LineChartComponent
                 fontWeight: 500,
               }}
             />
-            <Line type="monotone" dataKey="portfolio" stroke="#86ECE4" strokeWidth={2} name="Portfolio" dot={false} />
-            <Line type="monotone" dataKey="spy" stroke="#BEC9FF" strokeWidth={2} name="SPY" dot={false} />
+            <Line type="monotone" dataKey="portfolio" stroke="#FF64C8" strokeWidth={2} name="Portfolio" dot={false} />
+            <Line type="monotone" dataKey="spy" stroke="#32C8FF" strokeWidth={2} name="SPY" dot={false} />
           </LineChart>
         </ResponsiveContainer>
       </div>
