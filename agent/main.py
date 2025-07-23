@@ -82,7 +82,7 @@ async def llama_index_agent(input_data: RunAgentInput):
                 investment_portfolio=input_data.state["investment_portfolio"],
                 tool_logs=[]
             )
-            agent = FuncationCallingAgent(tools=input_data.tools, messages=input_data.messages, emit_event=emit_event)
+            agent = FuncationCallingAgent(tools=input_data.tools, messages=input_data.messages, emit_event=emit_event, available_cash=input_data.state["available_cash"])
 
             agent_task = agent.run(input = input_data.messages[-1].content)
             while True:
@@ -106,14 +106,14 @@ async def llama_index_agent(input_data: RunAgentInput):
                 ]
             )
             )
-            if state["messages"][-1].role == "assistant":
-                if state["messages"][-1].tool_calls:
+            if agent_task.result()[-1].role == "assistant":
+                if agent_task.result()[-1].tool_calls:
                     # for tool_call in state['messages'][-1].tool_calls:
                     yield encoder.encode(
                         ToolCallStartEvent(
                             type=EventType.TOOL_CALL_START,
-                            tool_call_id=state["messages"][-1].tool_calls[0].id,
-                            toolCallName=state["messages"][-1]
+                            tool_call_id=agent_task.result()[-1].tool_calls[0].id,
+                            toolCallName=agent_task.result()[-1]
                             .tool_calls[0]
                             .function.name,
                         )
@@ -122,8 +122,8 @@ async def llama_index_agent(input_data: RunAgentInput):
                     yield encoder.encode(
                         ToolCallArgsEvent(
                             type=EventType.TOOL_CALL_ARGS,
-                            tool_call_id=state["messages"][-1].tool_calls[0].id,
-                            delta=state["messages"][-1]
+                            tool_call_id=agent_task.result()[-1].tool_calls[0].id,
+                            delta=agent_task.result()[-1]
                             .tool_calls[0]
                             .function.arguments,
                         )
@@ -132,7 +132,7 @@ async def llama_index_agent(input_data: RunAgentInput):
                     yield encoder.encode(
                         ToolCallEndEvent(
                             type=EventType.TOOL_CALL_END,
-                            tool_call_id=state["messages"][-1].tool_calls[0].id,
+                            tool_call_id=agent_task.result()[-1].tool_calls[0].id,
                         )
                     )
                 else:
@@ -145,8 +145,8 @@ async def llama_index_agent(input_data: RunAgentInput):
                     )
 
                     # Only send content event if content is not empty
-                    if state["messages"][-1].content:
-                        content = state["messages"][-1].content
+                    if agent_task.result()[-1].content:
+                        content = agent_task.result()[-1].content
                         # Split content into 100 parts
                         n_parts = 100
                         part_length = max(1, len(content) // n_parts)
