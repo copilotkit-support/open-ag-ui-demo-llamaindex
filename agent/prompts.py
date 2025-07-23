@@ -49,7 +49,7 @@ Data Processing Rules:
 
 EXAMPLE PROCESSING FLOW:
 
-For a query like "Invest in Apple with 10k dollars since Jan 2023" or "Make investments in Apple since 2021", when Portfolio already has stocks like TSLA, META, etc: 
+STRICTLY FOLLOW THIS WAY, For a query like "Invest in Apple with 10k dollars since Jan 2023" or "Make investments in Apple since 2021", when Portfolio already has stocks like TSLA, META, etc: 
 1. Extract parameters: AAPL, TSLA, META, $10,000, $23,000, $84,000, Jan 1 2023 - present
 2. Call extract_relevant_data_from_user_prompt tool with the parameters correctly
 

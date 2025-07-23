@@ -222,10 +222,9 @@ export default function OpenStocksCanvas() {
   })
 
   useCopilotChatSuggestions({
-    available: selectedStock ? "disabled" : "enabled",
+    available: "enabled",
     instructions: INVESTMENT_SUGGESTION_PROMPT,
-  },
-    [selectedStock])
+  })
 
   // const toggleComponentTree = () => {
   //   setShowComponentTree(!showComponentTree)
